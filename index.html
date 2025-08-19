@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>AI Hint Finder (No API)</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Load Compromise properly -->
   <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
 </head>
 <body>
@@ -13,7 +14,7 @@
     <textarea id="sourceText" placeholder="Paste your text/document here..."></textarea>
     <input id="question" type="text" placeholder="Ask your question...">
     
-    <button onclick="getHint()">Get Hint</button>
+    <button id="getHintBtn">Get Hint</button>
     
     <div id="hintOutput"></div>
   </div>
