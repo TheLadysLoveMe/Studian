@@ -1,23 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>AI Hint Finder (No API)</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://unpkg.com/compromise"></script>
-</head>
-<body>
-  <div class="container">
-    <h1>AI Hint Finder</h1>
-    
-    <textarea id="sourceText" placeholder="Paste your text/document here..."></textarea>
-    <input id="question" type="text" placeholder="Ask your question...">
-    
-    <button onclick="getHint()">Get Hint</button>
-    
-    <div id="hintOutput"></div>
-  </div>
+function getHint() {
+  const text = document.getElementById("sourceText").value;
+  const question = document.getElementById("question").value;
+  const output = document.getElementById("hintOutput");
 
-  <script src="script.js"></script>
-</body>
-</html>
+  if (!text || !question) {
+    output.innerHTML = "⚠️ Please provide both text and a question.";
+    return;
+  }
+
+  output.innerHTML = "⏳ Analyzing text...";
+
+  // Use Compromise.js to extract nouns, verbs, and keywords from question
+  const doc = nlp(question);
+  const keywords = [
+    ...doc.nouns().out('array'),
+    ...doc.verbs().out('array')
+  ];
+
+  // Split text into sentences
+  const sentences = nlp(text).sentences().out('array');
+
+  // Find sentences that contain any keyword
+  const hints = sentences.filter(sentence => {
+    return keywords.some(kw => sentence.toLowerCase().includes(kw.toLowerCase()));
+  });
+
+  if (hints.length > 0) {
+    output.innerHTML = `💡 Hint: Check these parts of your text: <ul>${hints.map(s => `<li>${s}</li>`).join('')}</ul>`;
+  } else {
+    output.innerHTML = "🤔 I couldn't find exact matches. Try looking at section titles, first sentences, or keywords.";
+  }
+}
