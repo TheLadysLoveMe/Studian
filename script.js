@@ -10,15 +10,15 @@ function getHint() {
 
   output.innerHTML = "⏳ Analyzing text...";
 
-  // Use Compromise.js to extract nouns, verbs, and keywords from question
-  const doc = nlp(question);
+  // Use Compromise.js (ensure we reference window.nlp)
+  const doc = window.nlp(question);
   const keywords = [
     ...doc.nouns().out('array'),
     ...doc.verbs().out('array')
   ];
 
   // Split text into sentences
-  const sentences = nlp(text).sentences().out('array');
+  const sentences = window.nlp(text).sentences().out('array');
 
   // Find sentences that contain any keyword
   const hints = sentences.filter(sentence => {
