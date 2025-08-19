@@ -11,15 +11,14 @@ document.getElementById("getHintBtn").addEventListener("click", () => {
   output.innerHTML = "⏳ Analyzing text...";
 
   try {
-    // Use Compromise
-    const nlpLib = window.nlp; // ensure we use window.nlp
-    const doc = nlpLib(question);
+    // Call nlp() directly from the global Compromise object
+    const doc = window.nlp(question);
     const keywords = [
       ...doc.nouns().out('array'),
       ...doc.verbs().out('array')
     ];
 
-    const sentences = nlpLib(text).sentences().out('array');
+    const sentences = window.nlp(text).sentences().out('array');
 
     const hints = sentences.filter(sentence => {
       return keywords.some(kw => sentence.toLowerCase().includes(kw.toLowerCase()));
